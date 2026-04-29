@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,7 +30,8 @@ public class Animal {
     private Boolean castrado;
     private Boolean vermifugado;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "status_id")
     private StatusAnimal status;
 
     private String observacoes;
@@ -41,5 +41,5 @@ public class Animal {
     private ONG ong;
 
     @OneToMany(mappedBy = "animal")
-    private List<SolicitacaoAdocao> solicitacoesAdocao;
+    private List<com.example.scoapi.model.entity.SolicitacaoAdocao> solicitacoesAdocao;
 }

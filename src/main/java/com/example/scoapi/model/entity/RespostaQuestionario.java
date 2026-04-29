@@ -27,5 +27,5 @@ public class RespostaQuestionario {
 
     @ManyToOne
     @JoinColumn(name = "pergunta_id")
-    private com.example.saaapi.model.entity.Pergunta pergunta;
+    private com.example.scoapi.model.entity.Pergunta pergunta;
 }

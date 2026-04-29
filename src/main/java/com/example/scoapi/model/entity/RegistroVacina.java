@@ -23,5 +23,5 @@ public class RegistroVacina {
 
     @ManyToOne
     @JoinColumn(name = "protocolo_id")
-    private com.example.saaapi.model.entity.ProtocoloVacina protocolo;
+    private com.example.scoapi.model.entity.ProtocoloVacina protocolo;
 }

@@ -1,11 +1,10 @@
-package com.example.saaapi.model.entity;
+package com.example.scoapi.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -20,9 +19,7 @@ public class Pergunta {
     private Long id;
 
     private String texto;
-
-    @Enumerated(EnumType.STRING)
-    private TipoPergunta tipo;
+    private boolean ehAberta;
 
     @ManyToOne
     @JoinColumn(name = "questionario_id")

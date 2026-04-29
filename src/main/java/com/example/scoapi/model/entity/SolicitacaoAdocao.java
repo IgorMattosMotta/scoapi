@@ -1,4 +1,4 @@
-package com.example.saaapi.model.entity;
+package com.example.scoapi.model.entity;
 
 import com.example.scoapi.model.entity.Adotante;
 import com.example.scoapi.model.entity.Animal;
@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class SolicitacaoAdocao {
 
     @ManyToOne
     @JoinColumn(name = "status_id")
-    private com.example.saaapi.model.entity.StatusSolicitacao status;
+    private com.example.scoapi.model.entity.StatusSolicitacao status;
 
     private LocalDate dataDecisao;
     private String motivoRecusa;

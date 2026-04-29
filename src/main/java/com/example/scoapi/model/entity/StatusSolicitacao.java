@@ -1,4 +1,4 @@
-package com.example.saaapi.model.entity;
+package com.example.scoapi.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,5 +21,5 @@ public class StatusSolicitacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String descricao;
+    private String status;
 }

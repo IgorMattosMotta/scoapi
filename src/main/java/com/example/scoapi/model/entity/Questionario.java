@@ -23,5 +23,5 @@ public class Questionario {
     private ONG ong;
 
     @OneToMany(mappedBy = "questionario", cascade = CascadeType.ALL)
-    private List<com.example.saaapi.model.entity.Pergunta> perguntas;
+    private List<com.example.scoapi.model.entity.Pergunta> perguntas;
 }
