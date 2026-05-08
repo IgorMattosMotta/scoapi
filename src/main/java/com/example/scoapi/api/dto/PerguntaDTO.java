@@ -11,17 +11,19 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 public class PerguntaDTO {
     private Long id;
-
     private String texto;
     private boolean ehAberta;
-    private long questionario;
-    private String respostas;
 
-    public static PerguntaDTO create(Pergunta pergunta) {
+
+    private Long idQuestionario;
+
+    public static PerguntaDTO create (Pergunta pergunta) {
         ModelMapper modelMapper = new ModelMapper();
         PerguntaDTO dto = modelMapper.map(pergunta, PerguntaDTO.class);
-        dto.questionario = pergunta.getQuestionario().getId();
-        //dto.respostas = pergunta.getRespostas().;
+        if(pergunta.getQuestionario() != null){
+
+            dto.idQuestionario = pergunta.getQuestionario().getId();
+        }
         return dto;
     }
 }

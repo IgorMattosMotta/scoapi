@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ONGDTO {
+    private Long id;
     private String cnpj;
     private String nome;
 

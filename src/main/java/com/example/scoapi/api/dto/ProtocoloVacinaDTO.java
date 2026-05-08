@@ -12,20 +12,16 @@ import org.modelmapper.ModelMapper;
 public class ProtocoloVacinaDTO {
 
     private Long id;
-
     private String nomeVacina;
     private Integer quantidadeDoses;
     private Integer intervaloInterdoses;
     private String descricao;
 
-     private Integer dose;
 
-    public static ProtocoloVacinaDTO create(ProtocoloVacina ProtocoloVacina
+    public static ProtocoloVacinaDTO create(ProtocoloVacina protocoloVacina
     ) {
         ModelMapper modelMapper = new ModelMapper();
-        ProtocoloVacinaDTO dto = modelMapper.map(ProtocoloVacina
-                , ProtocoloVacinaDTO.class);
-       // dto.dose = ProtocoloVacina.getRegistros().get;
+        ProtocoloVacinaDTO dto = modelMapper.map(protocoloVacina, ProtocoloVacinaDTO.class);
         return dto;
     }
 

@@ -13,13 +13,17 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 public class QuestionarioDTO {
     private Long id;
-    private String ong;
+    private Long idOng;
+    private String nomeOng;
 
 
     public static QuestionarioDTO create(Questionario questionario) {
         ModelMapper modelMapper = new ModelMapper();
         QuestionarioDTO dto = modelMapper.map(questionario, QuestionarioDTO.class);
-        dto.ong = questionario.getOng().getCnpj();
+       if(questionario.getOng() != null){
+           dto.idOng = questionario.getOng().getId();
+           dto.nomeOng = questionario.getOng().getNome();
+       }
         return dto;
     }
 }
