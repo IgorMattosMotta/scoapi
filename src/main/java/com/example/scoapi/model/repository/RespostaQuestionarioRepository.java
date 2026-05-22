@@ -1,7 +1,7 @@
 package com.example.scoapi.model.repository;
 
-import com.example.scoapi.model.entity.RegistroQuestionario;
+import com.example.scoapi.model.entity.RespostaQuestionario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RegistroQuestionarioRepository extends JpaRepository<RegistroQuestionarioRepository, Long> {
+public interface RespostaQuestionarioRepository extends JpaRepository<RespostaQuestionario, Long> {
 }
