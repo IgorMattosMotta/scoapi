@@ -10,7 +10,7 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class SolicitacaoadocaoDTO {
+public class SolicitacaoAdocaoDTO {
     private Long id;
     private String dataSolicitacao;
     private String dataDecisao;
@@ -23,9 +23,9 @@ public class SolicitacaoadocaoDTO {
     private Long idStatus;
     private String statusDescricao;
 
-    public static SolicitacaoadocaoDTO create(SolicitacaoAdocao solicitacao) {
+    public static SolicitacaoAdocaoDTO create(SolicitacaoAdocao solicitacao) {
         ModelMapper modelMapper = new ModelMapper();
-        SolicitacaoadocaoDTO dto = modelMapper.map(solicitacao, SolicitacaoadocaoDTO.class);
+        SolicitacaoAdocaoDTO dto = modelMapper.map(solicitacao, SolicitacaoAdocaoDTO.class);
 
         if (solicitacao.getAdotante() != null) {
             dto.idAdotante = solicitacao.getAdotante().getId();
