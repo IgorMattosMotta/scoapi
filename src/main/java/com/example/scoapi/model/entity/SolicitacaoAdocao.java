@@ -3,7 +3,7 @@ package com.example.scoapi.model.entity;
 import com.example.scoapi.model.entity.Adotante;
 import com.example.scoapi.model.entity.Animal;
 import com.example.scoapi.model.entity.RespostaQuestionario;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

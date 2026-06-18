@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/adotante")
 @RequiredArgsConstructor
 @CrossOrigin
+
 public class AdotanteController {
     private final AdotanteService service;
 

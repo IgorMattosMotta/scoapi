@@ -1,7 +1,7 @@
 package com.example.scoapi.model.entity;
 
 import com.example.scoapi.model.entity.SolicitacaoAdocao;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
