@@ -26,4 +26,5 @@ public class ONG extends Usuario {
 
     @OneToOne(mappedBy = "ong", cascade = CascadeType.ALL)
     private Questionario questionario;
+
 }

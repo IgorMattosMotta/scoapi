@@ -1,7 +1,12 @@
 package com.example.scoapi.api.config;
 
+import com.example.scoapi.security.JwtAuthFilter;
+import com.example.scoapi.security.JwtService;
+import com.example.scoapi.service.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -9,6 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 // (Ainda não temos JWT)
 // import com.example.scoapi.security.JwtAuthFilter;
@@ -19,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /*
+
 
     @Autowired
     private UsuarioService usuarioService;
@@ -31,14 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public OncePerRequestFilter jwtFilter(){
         return new JwtAuthFilter(jwtService, usuarioService);
     }
-    */
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /*
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -46,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .userDetailsService(usuarioService)
             .passwordEncoder(passwordEncoder());
     }
-    */
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -69,12 +75,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            /*
-
-            .and()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
-            */
+
     }
 
     @Override

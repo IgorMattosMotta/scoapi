@@ -1,24 +1,26 @@
 package com.example.scoapi.model.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
-public abstract class Usuario {
+@Builder
+@Entity
+public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String login;
+    private String cpf;
     private String email;
     private String senha;
-    private String telefone;
+    private boolean admin;
 }
