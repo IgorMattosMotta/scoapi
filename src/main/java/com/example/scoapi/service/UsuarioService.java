@@ -37,6 +37,8 @@ public class UsuarioService implements UserDetailsService {
     @Transactional
     public Usuario salvar(Usuario usuario){
         validar(usuario);
+        String senhaCriptografada = encoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaCriptografada);
         return repository.save(usuario);
     }
 

@@ -1,76 +1,34 @@
 package com.example.scoapi.api.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.*;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import springfox.documentation.spi.service.contexts.SecurityContext;
-
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
 
     @Bean
-    public Docket docket(){
-        return new Docket(DocumentationType.SWAGGER_2)
-                .useDefaultResponseMessages(false)
-                .select()
-                .apis(RequestHandlerSelectors
-                        .basePackage("com.example.scoapi.api.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .securityContexts(Arrays.asList(securityContext()))
-                .securitySchemes(Arrays.asList(apiKey()))
-                .apiInfo(apiInfo());
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("SCOAPI API")
+                        .description("API do Sistema de cadastro de Ongs")
+                        .version("1.0")
+                        .contact(new Contact()
+                                .name("Igor Mattos da Motta e Sarah Cristina")
+                                .url("https://github.com/IgorMattosMotta")
+                                .email("igormattos.motta@estudante.ufjf.br")))
+                .addSecurityItem(new SecurityRequirement().addList("Bearer"))
+                .components(new Components()
+                        .addSecuritySchemes("Bearer", new SecurityScheme()
+                                .name("Bearer")
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")));
     }
-
-    private ApiInfo apiInfo(){
-        return new ApiInfoBuilder()
-                .title("SCOAPI API")
-                .description("API do Sistema de cadastro de Ongs")
-                .version("1.0")
-                .contact(contact())
-                .build();
-    }
-
-    private Contact contact(){
-        return new Contact("Igor Mattos da Motta e Sarah Cristina"
-                , "https://github.com/IgorMattosMotta",
-                "igormattos.motta@estudante.ufjf.br ");
-    }
-
-
-    public ApiKey apiKey(){
-        return new ApiKey("JWT", "Authorization", "header");
-    }
-
-    private SecurityContext securityContext(){
-        return SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.any())
-                .build();
-    }
-
-    private List<SecurityReference> defaultAuth(){
-        AuthorizationScope authorizationScope = new AuthorizationScope(
-                "global", "accessEverything");
-        AuthorizationScope[] scopes = new AuthorizationScope[1];
-        scopes[0] = authorizationScope;
-        SecurityReference reference = new SecurityReference("JWT", scopes);
-        List<SecurityReference> auths = new ArrayList<>();
-        auths.add(reference);
-        return auths;
-    }
-
 }

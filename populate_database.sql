@@ -5,15 +5,15 @@
 SET session_replication_role = 'replica';
 
 -- TABELA: usuario (base para ONG e Adotante)
+-- Senhas em BCrypt (senhas originais: admin=admin123, demais=senha123/456/789/etc.)
 INSERT INTO usuario (id, login, cpf, email, senha, admin, dtype) VALUES
-(0, 'admin', '000.000.000-00', 'admin@scoapi.com', 'admin123', true, 'Usuario'),
-(1, 'ong_patas_felizes', '12.345.678/0001-90', 'contato@pataspelizes.org', 'senha123', false, 'ONG'),
-(2, 'ong_abrigo_amigo', '98.765.432/0001-10', 'info@abrigoamigo.org', 'senha456', false, 'ONG'),
-(3, 'joao_silva', '123.456.789-00', 'joao@email.com', 'senha789', false, 'Adotante'),
-(4, 'maria_santos', '987.654.321-00', 'maria@email.com', 'senha101112', false, 'Adotante'),
-(5, 'pedro_oliveira', '456.789.123-00', 'pedro@email.com', 'senha131415', false, 'Adotante'),
-(6, 'ana_costa', '789.123.456-00', 'ana@email.com', 'senha161718', false, 'Adotante');
-(7, 'admin', '789.123.456-00', 'admin@email.com', 'admin123', true, 'Adotante');
+(0, 'admin', '000.000.000-00', 'admin@scoapi.com', '$2b$10$4YJHesFqGGu3GRba0J69PONYYlxYfmDcOu.Zzg3LrfVtn1T0qBkoK', true, 'Usuario'),
+(1, 'ong_patas_felizes', '12.345.678/0001-90', 'contato@pataspelizes.org', '$2b$10$p.gRtDlWMO84Kafo67.nD.pQNg0yGymjhPFNSEyogO1ylAVbxiimm', false, 'ONG'),
+(2, 'ong_abrigo_amigo', '98.765.432/0001-10', 'info@abrigoamigo.org', '$2b$10$Iutc8NwnRo3i0Zm7SFzwWuUcWGwUDT/jZknLbnwQfp4seZp/zvDfG', false, 'ONG'),
+(3, 'joao_silva', '123.456.789-00', 'joao@email.com', '$2b$10$peSpnDzHH.yE3eTBiVJoIuJfEFCJ/NVj.ciNq0IxtYISQoqS2j1Iq', false, 'Adotante'),
+(4, 'maria_santos', '987.654.321-00', 'maria@email.com', '$2b$10$uUNQo1yxe050UK8UEnL6GeRGmEvXXKbpy1tYVLrgxcbaq6WZWp85i', false, 'Adotante'),
+(5, 'pedro_oliveira', '456.789.123-00', 'pedro@email.com', '$2b$10$Tj0I8E0ecfvDTMSG8ZmV0.fPJJG2AnZ0EJqtwFhJM0n7k/VA5XA4S', false, 'Adotante'),
+(6, 'ana_costa', '789.123.456-00', 'ana@email.com', '$2b$10$r.NGAbBVyNjs9kSTj17xh.9285xxnOXB18nEIcnpy6cneMpWnQ2fi', false, 'Adotante');
 
 
 -- TABELA: ong
