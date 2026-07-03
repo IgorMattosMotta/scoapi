@@ -15,9 +15,6 @@ import lombok.NoArgsConstructor;
 @Entity
 public class RespostaQuestionario {
 
-    public Long idSolicitacao;
-    public Long idPergunta;
-    public Long textoPergunta;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

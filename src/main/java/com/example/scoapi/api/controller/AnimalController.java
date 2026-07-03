@@ -1,6 +1,7 @@
 package com.example.scoapi.api.controller;
 
 import com.example.scoapi.api.dto.AnimalDTO;
+import com.example.scoapi.api.dto.RegistroVacinaDTO;
 import com.example.scoapi.exception.RegraNegocioException;
 import com.example.scoapi.model.entity.Animal;
 import com.example.scoapi.service.AnimalService;
@@ -71,6 +72,16 @@ public class AnimalController {
         try {
             service.excluir(animal.get());
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}/prontuario")
+    public ResponseEntity consultarProntuario(@PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.ok(service.consultarProntuario(id).stream()
+                    .map(RegistroVacinaDTO::create).collect(Collectors.toList()));
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -42,4 +42,7 @@ public class Animal {
 
     @OneToMany(mappedBy = "animal")
     private List<com.example.scoapi.model.entity.SolicitacaoAdocao> solicitacoesAdocao;
+
+    @OneToMany(mappedBy = "animal")
+    private List<RegistroVacina> registros;
 }

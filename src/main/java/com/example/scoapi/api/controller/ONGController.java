@@ -1,13 +1,17 @@
 package com.example.scoapi.api.controller;
 
+import com.example.scoapi.api.dto.AnimalDTO;
 import com.example.scoapi.api.dto.ONGDTO;
+import com.example.scoapi.api.dto.SolicitacaoAdocaoDTO;
 import com.example.scoapi.exception.RegraNegocioException;
+import com.example.scoapi.model.entity.Animal;
 import com.example.scoapi.model.entity.ONG;
 import com.example.scoapi.service.ONGService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class ONGController {
     private final ONGService service;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping()
     public ResponseEntity get(){
@@ -40,8 +45,11 @@ public class ONGController {
     public ResponseEntity post(@RequestBody ONGDTO dto) {
         try {
             ONG ong = converter(dto);
+            if (ong.getSenha() != null && !ong.getSenha().isEmpty()) {
+                ong.setSenha(passwordEncoder.encode(ong.getSenha()));
+            }
             ong = service.salvar(ong);
-            return new ResponseEntity(ong, HttpStatus.CREATED);
+            return new ResponseEntity(ONGDTO.create(ong), HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -71,6 +79,27 @@ public class ONGController {
         try {
             service.excluir(ong.get());
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/animais")
+    public ResponseEntity cadastrarAnimal(@PathVariable("id") Long id, @RequestBody AnimalDTO dto) {
+        try {
+            Animal animal = new ModelMapper().map(dto, Animal.class);
+            return new ResponseEntity(AnimalDTO.create(service.cadastrarAnimal(id, animal)), HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/avaliar/{solicitacaoId}")
+    public ResponseEntity avaliar(@PathVariable("solicitacaoId") Long solicitacaoId,
+                                  @RequestParam("aprovar") boolean aprovar,
+                                  @RequestParam(value = "motivo", required = false) String motivo) {
+        try {
+            return ResponseEntity.ok(SolicitacaoAdocaoDTO.create(service.avaliarSolicitacao(solicitacaoId, aprovar, motivo)));
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

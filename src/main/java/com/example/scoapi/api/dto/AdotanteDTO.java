@@ -1,6 +1,7 @@
 package com.example.scoapi.api.dto;
 
 import com.example.scoapi.model.entity.Adotante;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,10 +16,17 @@ public class AdotanteDTO {
 
     private Long id;
 
+    private String login;
+    private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String senha;
+
     private String cpf;
     private String nomeCompleto;
     private LocalDate dataNascimento;
     private String endereco;
+    private String telefone;
 
     public static AdotanteDTO create(Adotante adotante) {
         ModelMapper modelMapper = new ModelMapper();

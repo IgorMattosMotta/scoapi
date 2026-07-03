@@ -1,7 +1,9 @@
 package com.example.scoapi.api.controller;
 
+import com.example.scoapi.api.dto.RespostaQuestionarioDTO;
 import com.example.scoapi.api.dto.SolicitacaoAdocaoDTO;
 import com.example.scoapi.exception.RegraNegocioException;
+import com.example.scoapi.model.entity.RespostaQuestionario;
 import com.example.scoapi.model.entity.SolicitacaoAdocao;
 import com.example.scoapi.service.SolicitacaoAdocaoService;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +74,56 @@ public class SolicitacaoAdocaoController {
         try {
             service.excluir(solicitacaoAdocao.get());
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/enviar")
+    public ResponseEntity enviar(@PathVariable("id") Long id) {
+        Optional<SolicitacaoAdocao> solicitacao = service.getSolicitacaoById(id);
+        if (!solicitacao.isPresent()) {
+            return new ResponseEntity("Solicitação de Adoção não encontrada!", HttpStatus.NOT_FOUND);
+        }
+        try {
+            return ResponseEntity.ok(SolicitacaoAdocaoDTO.create(service.enviarSolicitacao(solicitacao.get())));
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/cancelar")
+    public ResponseEntity cancelar(@PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.ok(SolicitacaoAdocaoDTO.create(service.cancelarSolicitacao(id)));
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/aprovar")
+    public ResponseEntity aprovar(@PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.ok(SolicitacaoAdocaoDTO.create(service.aprovar(id)));
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/recusar")
+    public ResponseEntity recusar(@PathVariable("id") Long id, @RequestParam("motivo") String motivo) {
+        try {
+            return ResponseEntity.ok(SolicitacaoAdocaoDTO.create(service.recusar(id, motivo)));
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{id}/respostas")
+    public ResponseEntity responder(@PathVariable("id") Long id, @RequestBody List<RespostaQuestionario> respostas) {
+        try {
+            return ResponseEntity.ok(service.responder(id, respostas).stream()
+                    .map(RespostaQuestionarioDTO::create).collect(Collectors.toList()));
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

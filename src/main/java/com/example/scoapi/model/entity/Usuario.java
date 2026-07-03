@@ -19,8 +19,8 @@ public class Usuario {
     private Long id;
 
     private String login;
-    private String cpf;
     private String email;
     private String senha;
+    private String telefone;
     private boolean admin;
 }

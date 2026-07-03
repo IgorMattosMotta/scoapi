@@ -17,8 +17,6 @@ import java.util.List;
 @Entity
 public class Adotante extends Usuario {
 
-    private Long id;
-
     private String cpf;
     private String nomeCompleto;
     private LocalDate dataNascimento;

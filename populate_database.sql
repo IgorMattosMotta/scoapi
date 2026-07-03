@@ -1,44 +1,24 @@
--- Script para popular o banco de dados scoapi_db
--- Este script insere dados fictícios mas realistas para teste e desenvolvimento
-
--- Desabilitar restrições de chave estrangeira temporariamente
 SET session_replication_role = 'replica';
 
--- TABELA: usuario (base para ONG e Adotante)
--- Senhas em BCrypt (senhas originais: admin=admin123, demais=senha123/456/789/etc.)
-INSERT INTO usuario (id, login, cpf, email, senha, admin, dtype) VALUES
-(0, 'admin', '000.000.000-00', 'admin@scoapi.com', '$2b$10$4YJHesFqGGu3GRba0J69PONYYlxYfmDcOu.Zzg3LrfVtn1T0qBkoK', true, 'Usuario'),
-(1, 'ong_patas_felizes', '12.345.678/0001-90', 'contato@pataspelizes.org', '$2b$10$p.gRtDlWMO84Kafo67.nD.pQNg0yGymjhPFNSEyogO1ylAVbxiimm', false, 'ONG'),
-(2, 'ong_abrigo_amigo', '98.765.432/0001-10', 'info@abrigoamigo.org', '$2b$10$Iutc8NwnRo3i0Zm7SFzwWuUcWGwUDT/jZknLbnwQfp4seZp/zvDfG', false, 'ONG'),
-(3, 'joao_silva', '123.456.789-00', 'joao@email.com', '$2b$10$peSpnDzHH.yE3eTBiVJoIuJfEFCJ/NVj.ciNq0IxtYISQoqS2j1Iq', false, 'Adotante'),
-(4, 'maria_santos', '987.654.321-00', 'maria@email.com', '$2b$10$uUNQo1yxe050UK8UEnL6GeRGmEvXXKbpy1tYVLrgxcbaq6WZWp85i', false, 'Adotante'),
-(5, 'pedro_oliveira', '456.789.123-00', 'pedro@email.com', '$2b$10$Tj0I8E0ecfvDTMSG8ZmV0.fPJJG2AnZ0EJqtwFhJM0n7k/VA5XA4S', false, 'Adotante'),
-(6, 'ana_costa', '789.123.456-00', 'ana@email.com', '$2b$10$r.NGAbBVyNjs9kSTj17xh.9285xxnOXB18nEIcnpy6cneMpWnQ2fi', false, 'Adotante');
+INSERT INTO usuario (id, login, email, senha, telefone, admin, dtype) VALUES
+(0, 'admin', 'admin@scoapi.com', '$2b$10$4YJHesFqGGu3GRba0J69PONYYlxYfmDcOu.Zzg3LrfVtn1T0qBkoK', '(11) 99999-0000', true, 'Usuario');
 
+INSERT INTO usuario (id, login, email, senha, telefone, admin, dtype, cnpj, nome) VALUES
+(1, 'ong_patas_felizes', 'contato@pataspelizes.org', '$2b$10$p.gRtDlWMO84Kafo67.nD.pQNg0yGymjhPFNSEyogO1ylAVbxiimm', '(11) 3333-1111', false, 'ONG', '12.345.678/0001-90', 'Patas Felizes'),
+(2, 'ong_abrigo_amigo', 'info@abrigoamigo.org', '$2b$10$Iutc8NwnRo3i0Zm7SFzwWuUcWGwUDT/jZknLbnwQfp4seZp/zvDfG', '(21) 3333-2222', false, 'ONG', '98.765.432/0001-10', 'Abrigo Amigo');
 
--- TABELA: ong
-INSERT INTO ong (id, cnpj, nome) VALUES
-(1, '12.345.678/0001-90', 'Patas Felizes'),
-(2, '98.765.432/0001-10', 'Abrigo Amigo');
+INSERT INTO usuario (id, login, email, senha, telefone, admin, dtype, cpf, nome_completo, data_nascimento, endereco) VALUES
+(3, 'joao_silva', 'joao@email.com', '$2b$10$peSpnDzHH.yE3eTBiVJoIuJfEFCJ/NVj.ciNq0IxtYISQoqS2j1Iq', '(11) 98888-3333', false, 'Adotante', '123.456.789-00', 'João Silva', '1990-05-15', 'Rua A, 123 - São Paulo, SP'),
+(4, 'maria_santos', 'maria@email.com', '$2b$10$uUNQo1yxe050UK8UEnL6GeRGmEvXXKbpy1tYVLrgxcbaq6WZWp85i', '(21) 98888-4444', false, 'Adotante', '987.654.321-00', 'Maria Santos', '1985-08-22', 'Avenida B, 456 - Rio de Janeiro, RJ'),
+(5, 'pedro_oliveira', 'pedro@email.com', '$2b$10$Tj0I8E0ecfvDTMSG8ZmV0.fPJJG2AnZ0EJqtwFhJM0n7k/VA5XA4S', '(31) 98888-5555', false, 'Adotante', '456.789.123-00', 'Pedro Oliveira', '1995-03-10', 'Rua C, 789 - Belo Horizonte, MG'),
+(6, 'ana_costa', 'ana@email.com', '$2b$10$r.NGAbBVyNjs9kSTj17xh.9285xxnOXB18nEIcnpy6cneMpWnQ2fi', '(61) 98888-6666', false, 'Adotante', '789.123.456-00', 'Ana Costa', '1988-12-30', 'Avenida D, 321 - Brasília, DF');
 
--- TABELA: adotante
-INSERT INTO adotante (id, cpf, nome_completo, data_nascimento, endereco) VALUES
-
-
-(3, '123.456.789-00', 'João Silva', '1990-05-15', 'Rua A, 123 - São Paulo, SP'),
-(4, '987.654.321-00', 'Maria Santos', '1985-08-22', 'Avenida B, 456 - Rio de Janeiro, RJ'),
-(5, '456.789.123-00', 'Pedro Oliveira', '1995-03-10', 'Rua C, 789 - Belo Horizonte, MG'),
-(6, '789.123.456-00', 'Ana Costa', '1988-12-30', 'Avenida D, 321 - Brasília, DF');
-
-
--- TABELA: status_animal
 INSERT INTO status_animal (id, estado) VALUES
 (1, 'Disponível'),
 (2, 'Adotado'),
 (3, 'Em tratamento'),
 (4, 'Sob adoção');
 
--- TABELA: animal
 INSERT INTO animal (id, nome, especie, raca, data_nascimento, foto, tamanho, peso, sexo, castrado, vermifugado, status_id, observacoes, ong_id) VALUES
 (1, 'Rex', 'Cão', 'Labrador', '2020-01-15', 'rex.jpg', 'Grande', 30.5, 'Macho', true, true, 1, 'Cão dócil e amigável', 1),
 (2, 'Mimi', 'Gato', 'Persa', '2019-06-20', 'mimi.jpg', 'Pequeno', 4.2, 'Fêmea', true, true, 1, 'Gata carinhosa', 1),
@@ -47,14 +27,12 @@ INSERT INTO animal (id, nome, especie, raca, data_nascimento, foto, tamanho, pes
 (5, 'Bella', 'Cão', 'Poodle', '2019-11-12', 'bella.jpg', 'Pequeno', 5.5, 'Fêmea', true, true, 3, 'Em tratamento de dermatite', 1),
 (6, 'Thor', 'Cão', 'Bulldog', '2021-07-22', 'thor.jpg', 'Médio', 25.0, 'Macho', false, false, 1, 'Cão tranquilo e calmo', 2);
 
--- TABELA: status_solicitacao
 INSERT INTO status_solicitacao (id, status) VALUES
 (1, 'Pendente'),
 (2, 'Aprovada'),
 (3, 'Recusada'),
 (4, 'Cancelada');
 
--- TABELA: solicitacao_adocao
 INSERT INTO solicitacao_adocao (id, data_solicitacao, status_id, data_decisao, motivo_recusa, adotante_id, animal_id) VALUES
 (1, '2024-01-10', 2, '2024-01-15', NULL, 3, 1),
 (2, '2024-02-05', 2, '2024-02-10', NULL, 4, 2),
@@ -62,30 +40,26 @@ INSERT INTO solicitacao_adocao (id, data_solicitacao, status_id, data_decisao, m
 (4, '2024-04-12', 3, '2024-04-18', 'Não atende aos critérios de espaço', 6, 5),
 (5, '2024-05-08', 2, '2024-05-15', NULL, 3, 6);
 
--- TABELA: protocolo_vacina
 INSERT INTO protocolo_vacina (id, nome_vacina, quantidade_doses, intervalo_interdoses, descricao) VALUES
 (1, 'Tríplice Felina', 3, 21, 'Vacina contra Panleucopenia, Calicivírus e Rinotraqueíte'),
 (2, 'Múltipla Canina', 3, 21, 'Vacina contra Cinomose, Parvovirose e Leptospirose'),
 (3, 'Raiva', 1, 0, 'Vacina contra Raiva'),
 (4, 'Bordetella', 2, 21, 'Vacina contra Traqueobronquite Infecciosa');
 
--- TABELA: registro_vacina
-INSERT INTO registro_vacina (id, data_aplicacao, dose, protocolo_id) VALUES
-(1, '2024-01-15', 1, 2),
-(2, '2024-02-05', 2, 2),
-(3, '2024-02-26', 3, 2),
-(4, '2024-01-20', 1, 1),
-(5, '2024-02-10', 2, 1),
-(6, '2024-01-22', 1, 3),
-(7, '2024-03-10', 1, 4),
-(8, '2024-03-31', 2, 4);
+INSERT INTO registro_vacina (id, data_aplicacao, dose, protocolo_id, animal_id) VALUES
+(1, '2024-01-15', 1, 2, 1),
+(2, '2024-02-05', 2, 2, 1),
+(3, '2024-02-26', 3, 2, 1),
+(4, '2024-01-20', 1, 1, 2),
+(5, '2024-02-10', 2, 1, 2),
+(6, '2024-01-22', 1, 3, 1),
+(7, '2024-03-10', 1, 4, 3),
+(8, '2024-03-31', 2, 4, 3);
 
--- TABELA: questionario
 INSERT INTO questionario (id, ong_id) VALUES
 (1, 1),
 (2, 2);
 
--- TABELA: pergunta
 INSERT INTO pergunta (id, texto, eh_aberta, questionario_id) VALUES
 (1, 'Qual é o seu tipo de moradia?', false, 1),
 (2, 'Quantas pessoas moram na sua casa?', false, 1),
@@ -96,7 +70,6 @@ INSERT INTO pergunta (id, texto, eh_aberta, questionario_id) VALUES
 (7, 'Qual é seu compromisso com o bem-estar animal?', true, 2),
 (8, 'Alguém na família tem alergia a animais?', false, 2);
 
--- TABELA: resposta_questionario
 INSERT INTO resposta_questionario (id, conteudo, solicitacao_id, pergunta_id) VALUES
 (1, 'Casa própria', 1, 1),
 (2, '3 pessoas', 1, 2),
@@ -114,13 +87,9 @@ INSERT INTO resposta_questionario (id, conteudo, solicitacao_id, pergunta_id) VA
 (14, 'Acima de 8.000', 3, 4),
 (15, 'Proporcionaria veterinário regular', 3, 5);
 
--- Reabilitar restrições de chave estrangeira
-SET session_replication_role = 'default';
+SET session_replication_role = 'origin';
 
--- Redefine sequence IDs para garantir que novos registros tenham IDs corretos
-SELECT setval('usuario_id_seq', (SELECT MAX(id) FROM usuario) + 1);
-SELECT setval('ong_id_seq', (SELECT MAX(id) FROM ong) + 1);
-SELECT setval('adotante_id_seq', (SELECT MAX(id) FROM adotante) + 1);
+SELECT setval('hibernate_sequence', (SELECT MAX(id) FROM usuario) + 1);
 SELECT setval('status_animal_id_seq', (SELECT MAX(id) FROM status_animal) + 1);
 SELECT setval('animal_id_seq', (SELECT MAX(id) FROM animal) + 1);
 SELECT setval('status_solicitacao_id_seq', (SELECT MAX(id) FROM status_solicitacao) + 1);

@@ -39,6 +39,25 @@ public class AdotanteService {
         repository.delete(adotante);
     }
 
+    @Transactional
+    public Adotante editarPerfil(Long id, Adotante dados) {
+        Adotante adotante = repository.findById(id)
+                .orElseThrow(() -> new RegraNegocioException("Adotante não encontrado"));
+        if (dados.getNomeCompleto() != null) {
+            adotante.setNomeCompleto(dados.getNomeCompleto());
+        }
+        if (dados.getDataNascimento() != null) {
+            adotante.setDataNascimento(dados.getDataNascimento());
+        }
+        if (dados.getEndereco() != null) {
+            adotante.setEndereco(dados.getEndereco());
+        }
+        if (dados.getTelefone() != null) {
+            adotante.setTelefone(dados.getTelefone());
+        }
+        return repository.save(adotante);
+    }
+
     public void validar(Adotante adotante) {
         if (adotante == null) {
             throw new RegraNegocioException("Adotante invalido");

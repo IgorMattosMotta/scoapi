@@ -24,7 +24,6 @@ public class JwtService {
     @Value("${security.jwt.chave-assinatura}")
     private String chaveAssinatura;
 
-    // Converte a String de configuração em uma chave segura do tipo SecretKey
     private SecretKey getChave() {
         return Keys.hmacShaKeyFor(this.chaveAssinatura.getBytes(StandardCharsets.UTF_8));
     }

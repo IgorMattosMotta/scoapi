@@ -1,7 +1,9 @@
 package com.example.scoapi.service;
 
 import com.example.scoapi.exception.RegraNegocioException;
+import com.example.scoapi.model.entity.Animal;
 import com.example.scoapi.model.entity.ONG;
+import com.example.scoapi.model.entity.SolicitacaoAdocao;
 import com.example.scoapi.model.repository.ONGRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +16,15 @@ import java.util.Optional;
 public class ONGService {
 
     private final ONGRepository repository;
+    private final AnimalService animalService;
+    private final SolicitacaoAdocaoService solicitacaoService;
 
-    public ONGService(ONGRepository repository) {
+    public ONGService(ONGRepository repository,
+                      AnimalService animalService,
+                      SolicitacaoAdocaoService solicitacaoService) {
         this.repository = repository;
+        this.animalService = animalService;
+        this.solicitacaoService = solicitacaoService;
     }
 
     public List<ONG> getOngs() {
@@ -37,6 +45,22 @@ public class ONGService {
     public void excluir(ONG ong) {
         Objects.requireNonNull(ong.getId());
         repository.delete(ong);
+    }
+
+    @Transactional
+    public Animal cadastrarAnimal(Long ongId, Animal animal) {
+        ONG ong = repository.findById(ongId)
+                .orElseThrow(() -> new RegraNegocioException("ONG não encontrada"));
+        animal.setOng(ong);
+        return animalService.salvar(animal);
+    }
+
+    @Transactional
+    public SolicitacaoAdocao avaliarSolicitacao(Long solicitacaoId, boolean aprovar, String motivoRecusa) {
+        if (aprovar) {
+            return solicitacaoService.aprovar(solicitacaoId);
+        }
+        return solicitacaoService.recusar(solicitacaoId, motivoRecusa);
     }
 
     public void validar(ONG ong) {

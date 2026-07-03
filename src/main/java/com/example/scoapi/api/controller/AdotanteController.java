@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 public class AdotanteController {
     private final AdotanteService service;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping()
     public ResponseEntity get(){
@@ -41,8 +43,11 @@ public class AdotanteController {
     public ResponseEntity post(@RequestBody AdotanteDTO dto) {
         try {
             Adotante adotante = converter(dto);
+            if (adotante.getSenha() != null && !adotante.getSenha().isEmpty()) {
+                adotante.setSenha(passwordEncoder.encode(adotante.getSenha()));
+            }
             adotante = service.salvar(adotante);
-            return new ResponseEntity(adotante, HttpStatus.CREATED);
+            return new ResponseEntity(AdotanteDTO.create(adotante), HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -72,6 +77,16 @@ public class AdotanteController {
         try {
             service.excluir(adotante.get());
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/perfil")
+    public ResponseEntity editarPerfil(@PathVariable("id") Long id, @RequestBody AdotanteDTO dto) {
+        try {
+            Adotante adotante = service.editarPerfil(id, converter(dto));
+            return ResponseEntity.ok(AdotanteDTO.create(adotante));
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

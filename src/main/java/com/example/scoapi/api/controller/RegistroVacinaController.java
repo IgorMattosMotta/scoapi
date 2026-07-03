@@ -2,7 +2,11 @@ package com.example.scoapi.api.controller;
 
 import com.example.scoapi.api.dto.RegistroVacinaDTO;
 import com.example.scoapi.exception.RegraNegocioException;
+import com.example.scoapi.model.entity.Animal;
+import com.example.scoapi.model.entity.ProtocoloVacina;
 import com.example.scoapi.model.entity.RegistroVacina;
+import com.example.scoapi.service.AnimalService;
+import com.example.scoapi.service.ProtocoloVacinaService;
 import com.example.scoapi.service.RegistroVacinaService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,6 +24,8 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class RegistroVacinaController {
     private final RegistroVacinaService service;
+    private final ProtocoloVacinaService protocoloVacinaService;
+    private final AnimalService animalService;
 
     @GetMapping()
     public ResponseEntity get(){
@@ -41,7 +47,7 @@ public class RegistroVacinaController {
         try {
             RegistroVacina registroVacina = converter(dto);
             registroVacina = service.salvar(registroVacina);
-            return new ResponseEntity(registroVacina, HttpStatus.CREATED);
+            return new ResponseEntity(RegistroVacinaDTO.create(registroVacina), HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -54,8 +60,8 @@ public class RegistroVacinaController {
         try {
             RegistroVacina registroVacina = converter(dto);
             registroVacina.setId(id);
-            service.salvar(registroVacina);
-            return ResponseEntity.ok(registroVacina);
+            registroVacina = service.salvar(registroVacina);
+            return ResponseEntity.ok(RegistroVacinaDTO.create(registroVacina));
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -78,6 +84,20 @@ public class RegistroVacinaController {
         public RegistroVacina converter(RegistroVacinaDTO dto) {
             ModelMapper modelMapper = new ModelMapper();
             RegistroVacina registroVacina = modelMapper.map(dto, RegistroVacina.class);
+            if (dto.getIdProtocolo() != null) {
+                ProtocoloVacina protocolo = protocoloVacinaService.getProtocoloById(dto.getIdProtocolo())
+                        .orElseThrow(() -> new RegraNegocioException("Protocolo de vacina não encontrado"));
+                registroVacina.setProtocolo(protocolo);
+            } else {
+                registroVacina.setProtocolo(null);
+            }
+            if (dto.getIdAnimal() != null) {
+                Animal animal = animalService.getAnimalById(dto.getIdAnimal())
+                        .orElseThrow(() -> new RegraNegocioException("Animal não encontrado"));
+                registroVacina.setAnimal(animal);
+            } else {
+                registroVacina.setAnimal(null);
+            }
             return registroVacina;
         }
 }

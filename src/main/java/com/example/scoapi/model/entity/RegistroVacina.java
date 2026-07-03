@@ -24,4 +24,8 @@ public class RegistroVacina {
     @ManyToOne
     @JoinColumn(name = "protocolo_id")
     private com.example.scoapi.model.entity.ProtocoloVacina protocolo;
+
+    @ManyToOne
+    @JoinColumn(name = "animal_id")
+    private Animal animal;
 }

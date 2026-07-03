@@ -19,12 +19,18 @@ public class RegistroVacinaDTO {
     private LocalDate dataAplicacao;
     private Integer dose;
     private String nomeVacina;
+    private Long idProtocolo;
+    private Long idAnimal;
 
     public static RegistroVacinaDTO create(RegistroVacina registroVacina) {
         ModelMapper modelMapper = new ModelMapper();
         RegistroVacinaDTO dto = modelMapper.map(registroVacina, RegistroVacinaDTO.class);
         if(registroVacina.getProtocolo() != null){
             dto.nomeVacina = registroVacina.getProtocolo().getNomeVacina();
+            dto.idProtocolo = registroVacina.getProtocolo().getId();
+        }
+        if(registroVacina.getAnimal() != null){
+            dto.idAnimal = registroVacina.getAnimal().getId();
         }
         return dto;
     }

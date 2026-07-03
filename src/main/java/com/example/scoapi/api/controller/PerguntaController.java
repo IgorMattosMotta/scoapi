@@ -4,7 +4,9 @@ package com.example.scoapi.api.controller;
 import com.example.scoapi.api.dto.PerguntaDTO;
 import com.example.scoapi.exception.RegraNegocioException;
 import com.example.scoapi.model.entity.Pergunta;
+import com.example.scoapi.model.entity.Questionario;
 import com.example.scoapi.service.PerguntaService;
+import com.example.scoapi.service.QuestionarioService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class PerguntaController {
     private final PerguntaService service;
+    private final QuestionarioService questionarioService;
 
     @GetMapping()
     public ResponseEntity get(){
@@ -43,7 +46,7 @@ public class PerguntaController {
         try {
             Pergunta pergunta = converter(dto);
             pergunta = service.salvar(pergunta);
-            return new ResponseEntity(pergunta, HttpStatus.CREATED);
+            return new ResponseEntity(PerguntaDTO.create(pergunta), HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -57,8 +60,8 @@ public class PerguntaController {
         try {
             Pergunta pergunta = converter(dto);
             pergunta.setId(id);
-            service.salvar(pergunta);
-            return ResponseEntity.ok(pergunta);
+            pergunta = service.salvar(pergunta);
+            return ResponseEntity.ok(PerguntaDTO.create(pergunta));
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -81,6 +84,13 @@ public class PerguntaController {
     public Pergunta converter(PerguntaDTO dto) {
         ModelMapper modelMapper = new ModelMapper();
         Pergunta pergunta = modelMapper.map(dto, Pergunta.class);
+        if (dto.getIdQuestionario() != null) {
+            Questionario questionario = questionarioService.getQuestionarioById(dto.getIdQuestionario())
+                    .orElseThrow(() -> new RegraNegocioException("Questionário não encontrado"));
+            pergunta.setQuestionario(questionario);
+        } else {
+            pergunta.setQuestionario(null);
+        }
         return pergunta;
     }
 }

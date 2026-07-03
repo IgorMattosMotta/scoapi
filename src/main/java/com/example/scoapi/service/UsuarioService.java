@@ -80,8 +80,16 @@ public class UsuarioService implements UserDetailsService {
         if (usuario.getLogin() == null || usuario.getLogin().trim().equals("")) {
             throw new RegraNegocioException("Login inválido");
         }
-        if (usuario.getCpf() == null || usuario.getCpf().trim().equals("")) {
-            throw new RegraNegocioException("CPF inválido");
+        if (usuario.getEmail() == null || usuario.getEmail().trim().equals("")) {
+            throw new RegraNegocioException("Email inválido");
         }
+    }
+
+    public Usuario recuperarSenha(String email) {
+        if (email == null || email.trim().equals("")) {
+            throw new RegraNegocioException("Email inválido");
+        }
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new RegraNegocioException("Não existe usuário cadastrado com este email"));
     }
 }

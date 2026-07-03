@@ -2,7 +2,9 @@ package com.example.scoapi.service;
 
 import com.example.scoapi.exception.RegraNegocioException;
 import com.example.scoapi.model.entity.Animal;
+import com.example.scoapi.model.entity.RegistroVacina;
 import com.example.scoapi.model.repository.AnimalRepository;
+import com.example.scoapi.model.repository.RegistroVacinaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +16,11 @@ import java.util.Optional;
 public class AnimalService {
 
     private final AnimalRepository repository;
+    private final RegistroVacinaRepository registroVacinaRepository;
 
-    public AnimalService(AnimalRepository repository) {
+    public AnimalService(AnimalRepository repository, RegistroVacinaRepository registroVacinaRepository) {
         this.repository = repository;
+        this.registroVacinaRepository = registroVacinaRepository;
     }
 
     public List<Animal> getAnimais() {
@@ -37,6 +41,13 @@ public class AnimalService {
     public void excluir(Animal animal) {
         Objects.requireNonNull(animal.getId());
         repository.delete(animal);
+    }
+
+    public List<RegistroVacina> consultarProntuario(Long animalId) {
+        if (!repository.existsById(animalId)) {
+            throw new RegraNegocioException("Animal não encontrado");
+        }
+        return registroVacinaRepository.findByAnimalId(animalId);
     }
 
     public void validar(Animal animal) {
